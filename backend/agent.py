@@ -11,7 +11,7 @@ ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 
 def get_aws_context():
     try:
-        from mock_data import get_summary
+        from backend.mock_data import get_summary
         return json.dumps(get_summary(), indent=2)
     except:
         return '{"total_spend": 6606, "idle_instances": [{"name": "test-env-old", "cost": 560}]}'
@@ -61,7 +61,7 @@ async def call_claude(message):
 def offline_response(message):
     q = message.lower()
     try:
-        from mock_data import get_summary
+        from backend.mock_data import get_summary
         summary = get_summary()
         idle = summary.get("idle_instances", [])
     except:

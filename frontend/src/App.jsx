@@ -4,7 +4,12 @@ import Chat from './Chat';
 import OptimizeQueue from './OptimizeQueue';
 import ActionLog from './ActionLog';
 
-const tabs = ['Dashboard', 'Optimize', 'Ask CORA', 'Log'];
+const tabs = [
+  { name: 'Dashboard', icon: '📊' },
+  { name: 'Optimize', icon: '⚡' },
+  { name: 'Ask CORA', icon: '💬' },
+  { name: 'Log', icon: '📋' },
+];
 
 export default function App() {
   const [tab, setTab] = useState('Dashboard');
@@ -29,59 +34,130 @@ export default function App() {
     <div
       style={{
         minHeight: '100vh',
-        background: '#0b1120',
-        color: '#fff',
-        padding: '24px',
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+        color: '#f1f5f9',
+        padding: '12px',
         fontFamily: 'Inter, Arial, sans-serif',
+        overflow: 'hidden',
       }}
     >
-      <div
-        style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-        }}
-      >
-        <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ margin: 0, fontSize: '32px' }}>CORA Dashboard</h1>
-          <p style={{ marginTop: '8px', color: '#9ca3af' }}>
-            Cloud optimization, approvals, insights, and savings tracking.
+      <style>{`
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        .header-content {
+          animation: fadeInDown 0.6s ease-out;
+        }
+      `}</style>
+      
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        {/* Header */}
+        <div className="header-content" style={{ marginBottom: '32px', paddingTop: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #6366f1, #818cf8)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '20px',
+                fontWeight: 'bold',
+              }}
+            >
+              💰
+            </div>
+            <div>
+              <h1 style={{ margin: 0, fontSize: '36px', fontWeight: 700, letterSpacing: '-1px' }}>CORA</h1>
+              <p style={{ margin: '4px 0 0 0', color: '#cbd5e1', fontSize: '14px' }}>Cost Optimization & Recommendations AI</p>
+            </div>
+          </div>
+          <p style={{ margin: 0, color: '#94a3b8', fontSize: '15px', lineHeight: '1.6' }}>
+            Intelligent cloud cost optimization. Real-time insights, actionable recommendations, and automated savings tracking.
           </p>
         </div>
 
+        {/* Tabs */}
         <div
           style={{
             display: 'flex',
-            gap: '12px',
-            marginBottom: '24px',
+            gap: '8px',
+            marginBottom: '32px',
             flexWrap: 'wrap',
+            borderBottom: '1px solid rgba(148, 163, 184, 0.2)',
+            paddingBottom: '16px',
           }}
         >
           {tabs.map((t) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
+              key={t.name}
+              onClick={() => setTab(t.name)}
               style={{
-                padding: '10px 16px',
-                borderRadius: 10,
-                border: '1px solid #374151',
-                background: tab === t ? '#4a4ae8' : 'transparent',
-                color: tab === t ? '#fff' : '#9ca3af',
+                padding: '12px 20px',
+                borderRadius: '8px',
+                border: 'none',
+                background: tab === t.name 
+                  ? 'linear-gradient(135deg, #6366f1, #818cf8)' 
+                  : 'transparent',
+                color: tab === t.name ? '#fff' : '#cbd5e1',
                 cursor: 'pointer',
+                fontSize: '15px',
+                fontWeight: 500,
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+              onMouseEnter={(e) => {
+                if (tab !== t.name) {
+                  e.target.style.background = 'rgba(99, 102, 241, 0.1)';
+                  e.target.style.color = '#e2e8f0';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (tab !== t.name) {
+                  e.target.style.background = 'transparent';
+                  e.target.style.color = '#cbd5e1';
+                }
               }}
             >
-              {t}
+              <span>{t.icon}</span>
+              {t.name}
             </button>
           ))}
         </div>
 
+        {/* Content */}
         <div
           style={{
-            background: 'rgba(17, 24, 39, 0.85)',
-            borderRadius: 16,
-            padding: '20px',
-            minHeight: '420px',
-            border: '1px solid #1f2937',
-            backdropFilter: 'blur(8px)',
+            background: 'rgba(30, 41, 59, 0.6)',
+            borderRadius: '16px',
+            padding: '32px',
+            minHeight: '500px',
+            border: '1px solid rgba(148, 163, 184, 0.2)',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
           }}
         >
           {tab === 'Dashboard' && (

@@ -20,13 +20,13 @@ def health():
 
 @app.get("/api/dashboard")
 def dashboard():
-    from mock_data import get_dashboard_data
+    from backend.mock_data import get_dashboard_data
     return get_dashboard_data()
 
 
 @app.get("/api/recommendations")
 def recommendations():
-    from mock_data import get_recommendations
+    from backend.mock_data import get_recommendations
     return get_recommendations()
 
 
@@ -35,16 +35,16 @@ async def chat(body: dict):
     message = body.get("message", "")
     if not message:
         return {"answer": "Ask me about your AWS costs!", "insights": [], "suggestions": ["What's my biggest waste?", "Why did costs spike?"]}
-    from agent import ask_cora
+    from backend.agent import ask_cora
     return await ask_cora(message)
 
 
 @app.post("/api/actions/{action_id}/approve")
 def approve(action_id: str):
-    from mock_data import approve_action
+    from backend.mock_data import approve_action
     result = approve_action(action_id)
     try:
-        from notifications import send_sms, send_slack
+        from backend.notifications import send_sms, send_slack
         if result.get("success"):
             send_sms(f"CORA: {result['message']}")
             send_slack(f"CORA: {result['message']}")
@@ -55,9 +55,9 @@ def approve(action_id: str):
 
 @app.get("/api/actions/log")
 def log():
-    from mock_data import get_action_log
+    from backend.mock_data import get_action_log
     return get_action_log()
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
